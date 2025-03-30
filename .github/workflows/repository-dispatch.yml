@@ -58,6 +58,17 @@ jobs:
         event-type: trigger-tests
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "pr_number": "${{ github.event.pull_request.number }}"}'
 
+    - name: Wait for Playwright-template workflow
+      uses: convictional/trigger-workflow-and-wait@v1.6.1
+      with:
+        owner: karwatmateusz
+        repo: Playwright-template
+        github_token: ${{ secrets.PAT_TOKEN }}
+        workflow_file_name: dispatch-handler.yml
+        ref: main
+        wait_interval: 10
+        trigger_workflow: true
+        wait_workflow: true
     # - uses: actions/upload-artifact@v4
     #   if: always()
     #   with:
