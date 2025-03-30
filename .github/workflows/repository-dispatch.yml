@@ -65,7 +65,7 @@ jobs:
         repo: Playwright-template
         github_token: ${{ secrets.PAT_TOKEN }}
         workflow_file_name: dispatch-handler.yml
-        ref: main
+        ref: master
         wait_interval: 10
         trigger_workflow: true
         wait_workflow: true
