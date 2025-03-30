@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests with Repository Dispatch
 on:
   pull_request:
     branches: [ main, master ]
@@ -46,17 +46,18 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
     
+    - name: Trigger Playwright-template tests
+      if: success()
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.PAT_TOKEN }}
+        repository: karwatmateusz/Playwright-template
+        event-type: trigger-tests
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "pr_number": "${{ github.event.pull_request.number }}"}'
+
     - uses: actions/upload-artifact@v4
       if: always()
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-
-  call-template-tests:
-    needs: test
-    if: success()
-    uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
-    with:
-      caller-repo: ${{ github.repository }}
-      pr-number: ${{ github.event.pull_request.number }}
