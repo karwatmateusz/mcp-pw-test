@@ -1,12 +1,10 @@
 import { test, expect } from '@playwright/test';
 
-test('playwright.dev test', async ({ page }) => {
+test('sample test for cross-repository trigger', async ({ page }) => {
   await page.goto('/');
-  
-  // Check that we have the title
   await expect(page).toHaveTitle(/Playwright/);
   
-  // Ensure the getting started link is visible
-  const gettingStarted = page.getByRole('link', { name: 'Getting started' });
-  await expect(gettingStarted).toBeVisible();
+  // Add a simple assertion to test the workflow
+  const heading = page.getByRole('heading', { name: /Playwright/ });
+  await expect(heading).toBeVisible();
 });

@@ -52,11 +52,3 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-
-  call-template-tests:
-    needs: test
-    if: success()
-    uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
-    with:
-      caller-repo: ${{ github.repository }}
-      pr-number: ${{ github.event.pull_request.number }}
