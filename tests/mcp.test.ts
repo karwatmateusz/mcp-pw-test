@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('sample test for cross-repository trigger v3', async ({ page }) => {
+test('sample test for cross-repository trigger v4', async ({ page }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/Playwright/);
   
