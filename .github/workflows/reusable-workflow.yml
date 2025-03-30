@@ -56,7 +56,12 @@ jobs:
   call-template-tests:
     needs: test
     if: success()
+    permissions:
+      issues: write
+      pull-requests: write
     uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
     with:
       caller-repo: ${{ github.repository }}
       pr-number: ${{ github.event.pull_request.number }}
+    secrets:
+      github-token: ${{ secrets.PAT_TOKEN }}
