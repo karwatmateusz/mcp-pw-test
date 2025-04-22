@@ -75,17 +75,22 @@ jobs:
     # #     name: playwright-report
     # #     path: playwright-report/
     # #     retention-days: 30
-
-    - name: Trigger and wait for E2E tests
-      id: trigger-tests
-      uses: aurelien-baudet/workflow-dispatch@v2
-      with:
-        workflow: dispatch-handler.yml
-        repo: karwatmateusz/Playwright-template
-        ref: master
-        token: ${{ secrets.PAT_TOKEN }}
-        wait-for-completion: true
-    
-    - name: Check E2E test results
-      if: always()
-      run: echo 'E2E tests conclusion ${{ steps.trigger-tests.outputs.workflow-conclusion }}'
+  notest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger and wait for E2E tests
+        id: trigger-tests
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          workflow: dispatch-handler.yml
+          repo: karwatmateusz/Playwright-template
+          token: ${{ secrets.PAT_TOKEN }}
+          wait-for-completion: true
+          inputs: |
+            {
+              "pr_number": "${{ github.event.pull_request.number }}",
+            }
+      
+      - name: Check E2E test results
+        if: always()
+        run: echo 'E2E tests conclusion ${{ steps.trigger-tests.outputs.workflow-conclusion }}'
