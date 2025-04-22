@@ -84,10 +84,6 @@ jobs:
         repo: karwatmateusz/Playwright-template
         token: ${{ secrets.PAT_TOKEN }}
         wait-for-completion: true
-        inputs: |
-          {
-            "pr_number": "${{ github.event.pull_request.number }}",
-          }
     
     - name: Check E2E test results
       if: always()
