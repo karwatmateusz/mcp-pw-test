@@ -82,6 +82,7 @@ jobs:
       with:
         workflow: dispatch-handler.yml
         repo: karwatmateusz/Playwright-template
+        ref: master
         token: ${{ secrets.PAT_TOKEN }}
         wait-for-completion: true
         inputs: |
