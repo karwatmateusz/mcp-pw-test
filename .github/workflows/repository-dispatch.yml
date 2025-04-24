@@ -80,8 +80,8 @@ jobs:
       id: trigger-tests
       uses: aurelien-baudet/workflow-dispatch@v2
       with:
-        workflow: playwright.yml
-        repo: karwatmateusz/mcp-pw-test
+        workflow: dispatch-handler.yml
+        repo: karwatmateusz/Playwright-template
         ref: master
         token: ${{ secrets.PAT_TOKEN }}
         wait-for-completion: true
