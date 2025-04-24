@@ -82,6 +82,7 @@ jobs:
       with:
         workflow: playwright.yml
         repo: karwatmateusz/mcp-pw-test
+        ref: master
         token: ${{ secrets.PAT_TOKEN }}
         wait-for-completion: true
     
