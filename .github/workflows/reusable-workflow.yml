@@ -66,4 +66,4 @@ jobs:
       caller-repo: ${{ github.repository }}
       pr-number: ${{ github.event.pull_request.number }}
     secrets:
-      PTT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
