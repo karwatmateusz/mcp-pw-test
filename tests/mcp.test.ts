@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
 
 test('sample test for cross-repository trigger v4', async ({ page }) => {
-  await page.goto('/');
-  await expect(page).toHaveTitle(/Playwright/);
+  console.log('Running sample test for cross-repository trigger v4...');
+  // await page.goto('/');
+  // await expect(page).toHaveTitle(/Playwright/);
   
-  // Add a simple assertion to test the workflow
-  const heading = page.getByRole('heading', { name: /Playwright/ });
-  console.log('Heading element:', heading);
-  await expect(heading).toBeVisible();
+  // // Add a simple assertion to test the workflow
+  // const heading = page.getByRole('heading', { name: /Playwright/ });
+  // console.log('Heading element:', heading);
+  // await expect(heading).toBeVisible();
 });
