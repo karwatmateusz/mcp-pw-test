@@ -75,4 +75,3 @@ jobs:
     with:
       caller-repo: ${{ github.repository }}
       pr-number: ${{ github.event.pull_request.number }}
-    secrets: inherit
