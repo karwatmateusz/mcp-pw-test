@@ -74,5 +74,4 @@ jobs:
     with:
       caller-repo: ${{ github.repository }}
       pr-number: ${{ github.event.pull_request.number }}
-    secrets:
-      PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    secrets: inherit
