@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('sample test for cross-repository trigger v4', async ({ page }) => {
-  console.log('Running sample test for cross-repository trigger v4...');
+  console.log('Running sample test for cross-repository trigger v4..,.');
   console.log('processing environment variables...');
   console.log('GITHUB_ENVSEC:', process.env.ENVSEC);
   // await page.goto('/');
