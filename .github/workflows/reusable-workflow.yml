@@ -46,7 +46,9 @@ jobs:
 
     - name: view the secrets context
       shell: bash
-      run: echo "$SECRETS_CONTEXT"
+      run: |
+        echo "$SECRETS_CONTEXT"
+        echo "${{ github.event.pull_request.number}}"
       env:
         SECRETS_CONTEXT: ${{ toJson(secrets) }}
     
