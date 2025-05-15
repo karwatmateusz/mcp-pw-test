@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     outputs:
-      envsec: ${{ env.ENVSEC }}
+      envsec: ${{ steps.npm-cache-dir.outputs.envsec }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -31,8 +31,8 @@ jobs:
       shell: bash
       run: | 
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-        echo "ENVSEC=skip" >> $GITHUB_OUTPUT
-        echo "ENVSEC=skip" >> $GITHUB_ENV
+        echo "envir=skip" >> $GITHUB_ENV
+        echo "ENVSEC=$envir" >> $GITHUB_OUTPUT
         echo "set to skip"
         echo "$ENVSEC"
     
