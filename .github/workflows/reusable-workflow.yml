@@ -31,6 +31,7 @@ jobs:
       id: npm-cache-dir
       shell: bash
       run: | 
+        exit 0
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
         echo "envir=skip" >> $GITHUB_ENV
         echo "ENVSEC=skip" >> $GITHUB_OUTPUT
