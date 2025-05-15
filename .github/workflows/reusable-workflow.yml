@@ -31,8 +31,9 @@ jobs:
       shell: bash
       run: | 
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-        echo "ENVSEC=skip" >> $GITHUB_ENV
-        echo "::set-output name=envsec::skip"
+        echo "ENVSEC=skip" >> $GITHUB_OUTPUT
+        echo "set to skip"
+        echo "$ENVSEC"
     
     - uses: actions/cache@v3
       id: npm-cache
