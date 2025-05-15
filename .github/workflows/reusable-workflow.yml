@@ -2,8 +2,16 @@ name: Playwright Tests with Reusable Workflow
 on:
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+  # This workflow is triggered on pull requests to the main or master branch and can also be manually dispatched.
+    inputs:
+      env: 
+        description: 'Environment to run tests against'
+        required: false
+
 jobs:
   test:
+    if: ${{ github.event_name == 'pull_request' }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -66,9 +74,19 @@ jobs:
         path: playwright-report/
         retention-days: 30
 
+  dispatch:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo environment
+        run: |
+          echo "Running tests against environment: ${{ github.event.inputs.env }}"
+
   call-template-tests:
-    needs: test
-    if: success()
+    needs: 
+      - test
+      - dispatch
+    if: ${{ github.event_name == 'pull_request' && needs.test.result == 'success' || github.event_name == 'workflow_dispatch' || needs.dispatch.result == 'success' }}
     permissions:
       issues: write
       pull-requests: write
