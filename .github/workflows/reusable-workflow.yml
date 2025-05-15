@@ -14,6 +14,8 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    outputs:
+      envsec: ${{ steps.npm-cache-dir.outputs.envsec }}
     steps:
     - uses: actions/checkout@v4
       with:
