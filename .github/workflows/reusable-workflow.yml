@@ -32,6 +32,7 @@ jobs:
       run: | 
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
         echo "ENVSEC=skip" >> $GITHUB_OUTPUT
+        echo "ENVSEC=skip" >> $GITHUB_ENV
         echo "set to skip"
         echo "$ENVSEC"
     
