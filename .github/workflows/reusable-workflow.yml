@@ -83,10 +83,8 @@ jobs:
           echo "Running tests against environment: ${{ github.event.inputs.env }}"
 
   call-template-tests:
-    needs: 
-        - test
-        - dispatch
-    if: ${{ always() }}
+    needs: [test, dispatch]
+    if: ${{ needs.test.result == 'success' || needs.dispatch.result == 'success' }}
     permissions:
       issues: write
       pull-requests: write
