@@ -86,9 +86,7 @@ jobs:
     needs: 
         - test
         - dispatch
-    if: >
-      (github.event_name == 'pull_request' && (needs.test.result == 'success' || needs.test.result == null)) ||
-      (github.event_name == 'workflow_dispatch' && (needs.dispatch.result == 'success' || needs.dispatch.result == null))
+    if: ${{ always() }}
     permissions:
       issues: write
       pull-requests: write
