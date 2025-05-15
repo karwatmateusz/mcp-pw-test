@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       envsec: ${{ steps.npm-cache-dir.outputs.envsec }}
+      envir: ${{ env.envir}}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -32,7 +33,7 @@ jobs:
       run: | 
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
         echo "envir=skip" >> $GITHUB_ENV
-        echo "ENVSEC=$envir" >> $GITHUB_OUTPUT
+        echo "ENVSEC=skip" >> $GITHUB_OUTPUT
         echo "set to skip"
         echo "$ENVSEC"
     
@@ -109,3 +110,6 @@ jobs:
           else
             echo "ENVSEC is not set to skip, proceeding with the workflow call"
           fi
+      - name: Call reusable workflow
+        run: |
+          echo "${{ toJson(needs.test.outputs) }}"
