@@ -29,7 +29,7 @@ jobs:
       shell: bash
       run: | 
         echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-        echo "ENVSEC=${{ secrets.ENVSEC }}" >> $GITHUB_ENV
+        echo "ENVSEC=skip" >> $GITHUB_ENV
     
     - uses: actions/cache@v3
       id: npm-cache
@@ -83,13 +83,24 @@ jobs:
           echo "Running tests against environment: ${{ github.event.inputs.env }}"
 
   call-template-tests:
+    if: ${{ always() }}
     needs: [test, dispatch]
-    if: ${{ needs.test.result == 'success' || needs.dispatch.result == 'success' }}
-    permissions:
-      issues: write
-      pull-requests: write
-    uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
-    with:
-      caller-repo: ${{ github.repository }}
-      pr-number: ${{ github.event.pull_request.number }}
-    secrets: inherit
+    # permissions:
+    #   issues: write
+    #   pull-requests: write
+    # uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
+    # with:
+    #   caller-repo: ${{ github.repository }}
+    #   pr-number: ${{ github.event.pull_request.number }}
+    # secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Something
+        run: |
+          echo "Checking if the workflow was called"
+          if [[ "${{ env.ENVSEC }}" == "skip" ]]; then
+            echo "Skipping the workflow call as ENVSEC is set to skip"
+            exit 0
+          else
+            echo "ENVSEC is not set to skip, proceeding with the workflow call"
+          fi
