@@ -62,7 +62,7 @@ jobs:
         shell: bash
         run: |
           echo "Running tests against environment: ${{ github.event.inputs.env }}"
-          echo "envir=${{ inputs.env }}" >> $GITHUB_ENV
+          echo "envir=${{ inputs.env }}" >> $GITHUB_OUTPUT
 
   call-template-tests:
     if: ${{ !cancelled() }}
