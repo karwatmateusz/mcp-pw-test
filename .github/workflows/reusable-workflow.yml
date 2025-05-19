@@ -38,6 +38,12 @@ jobs:
           echo "ENVSEC=skip" >> $GITHUB_OUTPUT
           echo "set to skip"
           echo "$ENVSEC"
+          status=(false) 
+          ||
+          { 
+            echo "Failed to get npm cache directory"
+            exit 1
+          }
 
       - name: view the secrets context
         shell: bash
