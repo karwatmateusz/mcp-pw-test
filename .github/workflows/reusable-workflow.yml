@@ -35,7 +35,7 @@ jobs:
           exit 0
           echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
           echo "envir=skip" >> $GITHUB_ENV
-          echo "ENVSEC=${{ env.envir }}" >> $GITHUB_OUTPUT
+          echo "ENVSEC=skip" >> $GITHUB_OUTPUT
           echo "set to skip"
           echo "$ENVSEC"
 
@@ -43,7 +43,9 @@ jobs:
         shell: bash
         run: |
           echo "$SECRETS_CONTEXT"
-          echo "${{ github.event.pull_request.number}}"
+          echo "${{ github.event.pull_request.number }}"
+          echo "ENVSEC=${{ env.envir }}" >> $GITHUB_OUTPUT
+          echo "envir from env: $envir"
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
 
@@ -64,7 +66,7 @@ jobs:
 
   call-template-tests:
     if: ${{ !cancelled() }}
-    needs: [test]
+    needs: [dispatch]
     # permissions:
     #   issues: write
     #   pull-requests: write
@@ -78,12 +80,12 @@ jobs:
       - name: Skip
         run: |
           echo "Checking if the workflow was skipped"
-          if [[ "${{ needs.test.outputs.envsec }}" == "skip" ]]; then
-            echo "Skipping the workflow call as ENVSEC is set to skip"
+          if [[ "${{ needs.dispatch.outputs.envir }}" == "skip" ]]; then
+            echo "Skipping the workflow call as envir is set to skip"
             exit 0
           else
-            echo "ENVSEC is not set to skip, proceeding with the workflow call"
+            echo "envir is not set to skip, proceeding with the workflow call"
           fi
       - name: Call reusable workflow
         run: |
-          echo "${{ toJson(needs.test.outputs) }}"
+          echo "${{ toJson(needs.dispatch.outputs) }}"
