@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "Running tests against environment: ${{ github.event.inputs.env }}"
           echo "envir=${{ inputs.env }}" >> $GITHUB_OUTPUT
-          status=(false) || { 
+          status=(undefined) || { 
             echo "Failed to get npm cache directory"
             exit 1
           }
