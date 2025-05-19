@@ -2,6 +2,13 @@ name: Playwright Tests with Reusable Workflow
 on:
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+  # This workflow is triggered on pull requests to the main or master branch and can also be manually dispatched.
+    inputs:
+      env:
+        description: "Environment to run tests against"
+        type: string
+        required: false
 jobs:
   test:
     timeout-minutes: 60
