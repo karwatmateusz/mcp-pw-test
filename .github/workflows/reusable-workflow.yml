@@ -65,7 +65,7 @@ jobs:
           echo "envir=${{ inputs.env }}" >> $GITHUB_OUTPUT
 
   call-template-tests:
-    if: ${{ needs.dispatch.outputs.envir == 'skip' && !cancelled()  }}
+    if: ${{ !cancelled() && needs.dispatch.outputs.envir == '' }}
     needs: [dispatch]
     # permissions:
     #   issues: write
