@@ -1,12 +1,13 @@
 name: Playwright Tests with Reusable Workflow
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
-  # This workflow is triggered on pull requests to the main or master branch and can also be manually dispatched.
+    # This workflow is triggered on pull requests to the main or master branch and can also be manually dispatched.
     inputs:
-      env: 
-        description: 'Environment to run tests against'
+      env:
+        description: "Environment to run tests against"
+        type: string
         required: false
 
 jobs:
@@ -18,80 +19,52 @@ jobs:
       envsec: ${{ steps.npm-cache-dir.outputs.envsec }}
       envir: ${{ env.envir}}
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    
-    - name: Get npm cache directory
-      id: npm-cache-dir
-      shell: bash
-      run: | 
-        exit 0
-        echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
-        echo "envir=skip" >> $GITHUB_ENV
-        echo "ENVSEC=skip" >> $GITHUB_OUTPUT
-        echo "set to skip"
-        echo "$ENVSEC"
-    
-    - uses: actions/cache@v3
-      id: npm-cache
-      with:
-        path: ${{ steps.npm-cache-dir.outputs.dir }}
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-    
-    - name: Cache Playwright browsers
-      uses: actions/cache@v3
-      id: playwright-cache
-      with:
-        path: ~/.cache/ms-playwright
-        key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-playwright-
-    
-    - name: Install dependencies
-      run: npm ci
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
 
-    - name: view the secrets context
-      shell: bash
-      run: |
-        echo "$SECRETS_CONTEXT"
-        echo "${{ github.event.pull_request.number}}"
-      env:
-        SECRETS_CONTEXT: ${{ toJson(secrets) }}
-    
-    - name: Install Playwright Browsers
-      if: steps.playwright-cache.outputs.cache-hit != 'true'
-      run: npx playwright install --with-deps chromium
-    
-    - name: Run Playwright tests
-      run: npx playwright test
-    
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        shell: bash
+        run: |
+          exit 0
+          echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
+          echo "envir=skip" >> $GITHUB_ENV
+          echo "ENVSEC=${{ env.envir }}" >> $GITHUB_OUTPUT
+          echo "set to skip"
+          echo "$ENVSEC"
+
+      - name: view the secrets context
+        shell: bash
+        run: |
+          echo "$SECRETS_CONTEXT"
+          echo "${{ github.event.pull_request.number}}"
+        env:
+          SECRETS_CONTEXT: ${{ toJson(secrets) }}
 
   dispatch:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    if: ${{ !cancelled() }}
+    needs: test
+    outputs:
+      envsec: ${{ needs.test.outputs.envsec }}
+      envir: ${{ steps.env-setup.outputs.envir }}
     runs-on: ubuntu-latest
     steps:
       - name: echo environment
+        id: env-setup
+        shell: bash
         run: |
           echo "Running tests against environment: ${{ github.event.inputs.env }}"
+          echo "envir=${{ inputs.env }}" >> $GITHUB_ENV
 
   call-template-tests:
-    if: ${{ always() }}
-    needs: [test, dispatch]
+    if: ${{ !cancelled() }}
+    needs: [test]
     # permissions:
     #   issues: write
     #   pull-requests: write
@@ -102,9 +75,9 @@ jobs:
     # secrets: inherit
     runs-on: ubuntu-latest
     steps:
-      - name: Something
+      - name: Skip
         run: |
-          echo "Checking if the workflow was called"
+          echo "Checking if the workflow was skipped"
           if [[ "${{ needs.test.outputs.envsec }}" == "skip" ]]; then
             echo "Skipping the workflow call as ENVSEC is set to skip"
             exit 0
