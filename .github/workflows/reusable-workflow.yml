@@ -36,7 +36,7 @@ jobs:
           echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
           echo "envir=skip" >> $GITHUB_ENV
           echo "ENVSEC=skip" >> $GITHUB_OUTPUT
-          echo "set to skip"
+          echo "set t o skip"
           echo "$ENVSEC"
           status=(false) || { 
             echo "Failed to get npm cache directory"
