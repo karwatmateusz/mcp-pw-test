@@ -45,7 +45,7 @@ jobs:
           echo "$SECRETS_CONTEXT"
           echo "${{ github.event.pull_request.number }}"
           echo "ENVSEC=${{ env.envir }}" >> $GITHUB_OUTPUT
-          echo "envir from env: $envir"
+          echo "envir from env : $envir"
         env:
           SECRETS_CONTEXT: ${{ toJson(secrets) }}
 
