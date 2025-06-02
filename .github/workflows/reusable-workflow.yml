@@ -44,7 +44,7 @@ jobs:
 
       - name: check2
         run: |
-          if [[ ${ steps.verify-change.outputs.RESULT } == 'true' ]]; then
+          if [[ "${ steps.verify-change.outputs.RESULT }" == 'true' ]]; then
             echo "This step runs if there are changes in the repository"
           else
             echo "No changes detected, skipping this step"
