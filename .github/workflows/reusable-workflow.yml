@@ -31,6 +31,27 @@ jobs:
           node-version: 20
           cache: "npm"
 
+      - name: verify change
+        id: verify-change
+        run: |
+          echo "Checking if there are changes in the repository"
+          echo "RESULT=true" >> $GITHUB_OUTPUT
+
+      - name: check1
+        if: ${{ steps.verify-change.outputs.RESULT == 'true' }}
+        run: |
+          echo "This step runs if there are changes in the repository"
+          echo "${{ steps.verify-change.outputs.RESULT }}"
+
+      - name: check2
+        run: |
+          if [[ ${ steps.verify-change.outputs.RESULT } == 'true' ]]; then
+            echo "This step runs if there are changes in the repository"
+          else
+            echo "No changes detected, skipping this step"
+            echo "${{ steps.verify-change.outputs.RESULT }}"
+          fi
+
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: bash
