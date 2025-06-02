@@ -15,7 +15,6 @@ permissions:
 
 jobs:
   test:
-    if: ${{ github.event_name == 'pull_request' }}
     timeout-minutes: 60
     runs-on: ubuntu-latest
     outputs:
