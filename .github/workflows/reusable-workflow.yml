@@ -11,4 +11,4 @@ jobs:
     uses: karwatmateusz/Playwright-template/.github/workflows/reusable-test.yml@master
     with:
       caller-repo: ${{ github.repository }}
-      pr-number: "none"
+      pr-number: 0
